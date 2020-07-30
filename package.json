@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start-client": "react-scripts start",
+    "build-client": "react-scripts build",
     "start": "node server/server.js",
     "build": "react-scripts build && (cd server && npm install)",
     "test": "react-scripts test",

@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import { UserContext } from "./providers/user.provider";
-import { FeedbackContext } from "./providers/feedback.provider";
 import HomePage from "./pages/homepage/homepage.component";
 import ForgotPassword from "./pages/forgot-password/forgot-password.component";
 import SignUp from "./pages/sign-up/sign-up.component";
@@ -10,21 +9,24 @@ import Budgets from "./pages/budgets/budgets.component";
 import Reports from "./pages/reports/reports.component";
 import Profile from "./pages/profile/profile.component";
 import { isUserLoggedIn } from "./api";
+import LoadingWelcome from "./components/loading-welcome/loading-welcome.component";
 
 const App = () => {
   const { user, currentUser } = useContext(UserContext);
-  const { showLoadingScreen } = useContext(FeedbackContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const checkIfUserIsLoggedIn = async () => {
-      showLoadingScreen(true);
+      setLoading(true);
       const res = await isUserLoggedIn();
       if (res.data) currentUser(res.data);
-      showLoadingScreen(false);
+      setLoading(false);
     };
     checkIfUserIsLoggedIn();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading) return <LoadingWelcome />;
 
   return (
     <Switch>
